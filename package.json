@@ -1,17 +1,17 @@
 {
-  "name": "phantomjs2",
-  "version": "2.0.0",
+  "name": "phantomjs2-ext",
+  "version": "0.0.1",
   "keywords": [
     "phantomjs",
     "phantomjs2",
     "headless",
     "webkit"
   ],
-  "description": "Headless WebKit with JS API",
-  "homepage": "https://github.com/zeevl/phantomjs2",
+  "description": "Headless WebKit with JS API. Fork of https://github.com/zeevl/phantomjs2 with supporting of the Win x86",
+  "homepage": "https://github.com/gskachkov/phantomjs2",
   "repository": {
     "type": "git",
-    "url": "git://github.com/zeevl/phantomjs2.git"
+    "url": "git://github.com/gskachkov/phantomjs2.git"
   },
   "licenses": [
     {
@@ -19,10 +19,7 @@
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     }
   ],
-  "author": {
-    "name": "Steve Lamb",
-    "email": "steve@stevelamb.io"
-  },
+  "author": "Alexandr Skachkov <gskachkov@gmail.com>",
   "main": "lib/phantomjs",
   "bin": {
     "phantomjs": "./bin/phantomjs"
@@ -45,5 +42,12 @@
   },
   "devDependencies": {
     "nodeunit": "0.9.0"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/gskachkov/phantomjs2/issues"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "license": "MIT"
 }

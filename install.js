@@ -23,8 +23,10 @@ var url = require('url')
 var util = require('util')
 var which = require('which')
 
+var url = process.platform === 'win32' ? ' https://github.com/gskachkov/phantomjs/releases/download/' : 'https://github.com/bprodoehl/phantomjs/releases/download/'
+var systemPrefix = process.platform === 'win32' ? '-x86' : '';
 var cdnUrl = process.env.PHANTOMJS_CDNURL || 'https://github.com/bprodoehl/phantomjs/releases/download/'
-var downloadUrl = cdnUrl + helper.version + '/phantomjs-' + helper.version + '-'
+var downloadUrl = cdnUrl + helper.version + systemPrefix + '/phantomjs-' + helper.version + '-'
 
 var originalPath = process.env.PATH
 
@@ -109,6 +111,8 @@ whichDeferred.promise
       downloadUrl += 'linux-x86_64.zip'
     } else if (process.platform === 'darwin' || process.platform === 'openbsd' || process.platform === 'freebsd') {
       downloadUrl += 'macosx.zip'
+    } else if (process.platform === 'win32') {
+      downloadUrl += 'win-x86.zip'
     } else {
       console.error('Unexpected platform or architecture:', process.platform, process.arch)
       exit(1)
