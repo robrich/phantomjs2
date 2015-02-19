@@ -19,7 +19,7 @@ var npmconf = require('npmconf')
 var path = require('path')
 var request = require('request')
 var rimraf = require('rimraf')
-var url = require('url')
+var urlLib = require('url')
 var util = require('util')
 var which = require('which')
 
@@ -222,12 +222,12 @@ function getRequestOptions(conf) {
   if (proxyUrl) {
 
     // Print using proxy
-    var proxy = url.parse(proxyUrl)
+    var proxy = urlLib.parse(proxyUrl)
     if (proxy.auth) {
       // Mask password
       proxy.auth = proxy.auth.replace(/:.*$/, ':******')
     }
-    console.log('Using proxy ' + url.format(proxy))
+    console.log('Using proxy ' + urlLib.format(proxy))
 
     // Enable proxy
     options.proxy = proxyUrl
