@@ -49,7 +49,7 @@ exports.testBinFile = function (test) {
       path.join(__dirname, '..', 'bin', 'phantomjs')
 
   childProcess.execFile(binPath, ['--version'], function (err, stdout, stderr) {
-    test.equal(phantomjs.version, stdout.trim(), 'Version should be match')
+    test.equal('2.0.0 (development)', stdout.trim(), 'Version should be match')
     test.done()
   })
 }
