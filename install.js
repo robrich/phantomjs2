@@ -28,7 +28,8 @@ var customDownloadUrl = process.env.PHANTOMJS2_DOWNLOAD_URL || false
 var url = process.platform === 'win32' ? 'https://github.com/gskachkov/phantomjs/releases/download/' : 'https://github.com/bprodoehl/phantomjs/releases/download/'
 var systemPrefix = process.platform === 'win32' ? '-x86' : ''
 var cdnUrl = process.env.PHANTOMJS_CDNURL || url
-var downloadUrl = cdnUrl + helper.version + systemPrefix + '/phantomjs-' + helper.version + '-'
+var phantomVersion = process.env.PHANTOMJS2_VERSION || helper.version
+var downloadUrl = cdnUrl + phantomVersion + systemPrefix + '/phantomjs-' + phantomVersion + '-'
 
 var originalPath = process.env.PATH
 
@@ -88,7 +89,7 @@ whichDeferred.promise
   })
   .then(function (stdout) {
     var version = stdout.trim()
-    if (helper.version == version) {
+    if (phantomVersion == version) {
       writeLocationFile(phantomPath);
       console.log('PhantomJS is already installed at', phantomPath + '.')
       exit(0)
@@ -337,7 +338,7 @@ function copyIntoPlace(extractedPath, targetPath) {
     var files = fs.readdirSync(extractedPath)
     for (var i = 0; i < files.length; i++) {
       var file = path.join(extractedPath, files[i])
-      if (fs.statSync(file).isDirectory() && file.indexOf(helper.version) != -1) {
+      if (fs.statSync(file).isDirectory() && file.indexOf(phantomVersion) != -1) {
         console.log('Copying extracted folder', file, '->', targetPath)
         return kew.nfcall(ncp, file, targetPath)
       }
