@@ -24,7 +24,7 @@ What this installer is really doing is just grabbing a particular "blessed" (by 
 
 The package has been set up to fetch and run Phantom for MacOS (darwin) and Linux based platforms (as identified by nodejs), using the pre-built binaries from https://github.com/bprodoehl/phantomjs/releases/
 
-However it is possible to provide a custom download URl by setting the `PHANTOMJS2_DOWNLOAD_URL` environment variable.
+However it is possible to provide a custom download URL by setting the `PHANTOMJS2_DOWNLOAD_URL` environment variable. If you want to specify a custom version, make sure to also specify `PHANTOMJS2_VERSION`.
 
 Running
 -------
