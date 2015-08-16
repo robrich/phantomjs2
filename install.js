@@ -19,14 +19,17 @@ var npmconf = require('npmconf')
 var path = require('path')
 var request = require('request')
 var rimraf = require('rimraf')
-var url = require('url')
+var urlLib = require('url')
 var util = require('util')
 var which = require('which')
 
+// allow to specify a completely custom download url
+var customDownloadUrl = process.env.PHANTOMJS2_DOWNLOAD_URL || false
 var url = process.platform === 'win32' ? 'https://github.com/gskachkov/phantomjs/releases/download/' : 'https://github.com/bprodoehl/phantomjs/releases/download/'
 var systemPrefix = process.platform === 'win32' ? '-x86' : ''
 var cdnUrl = process.env.PHANTOMJS_CDNURL || url
-var downloadUrl = cdnUrl + helper.version + systemPrefix + '/phantomjs-' + helper.version + '-'
+var phantomVersion = process.env.PHANTOMJS2_VERSION || helper.version
+var downloadUrl = cdnUrl + phantomVersion + systemPrefix + '/phantomjs-' + phantomVersion + '-'
 
 var originalPath = process.env.PATH
 
@@ -86,7 +89,7 @@ whichDeferred.promise
   })
   .then(function (stdout) {
     var version = stdout.trim()
-    if (helper.version == version) {
+    if (phantomVersion == version) {
       writeLocationFile(phantomPath);
       console.log('PhantomJS is already installed at', phantomPath + '.')
       exit(0)
@@ -107,8 +110,11 @@ whichDeferred.promise
     tmpPath = findSuitableTempDirectory(conf)
 
     // Can't use a global version so start a download.
-    if (process.platform === 'linux' && process.arch === 'x64') {
-      downloadUrl += 'linux-x86_64.zip'
+    
+    if (customDownloadUrl) {
+      downloadUrl = customDownloadUrl
+    } else if (process.platform === 'linux' && process.arch === 'x64') {
+      downloadUrl += 'u1404-x86_64.zip'
     } else if (process.platform === 'darwin' || process.platform === 'openbsd' || process.platform === 'freebsd') {
       downloadUrl += 'macosx.zip'
     } else if (process.platform === 'win32') {
@@ -217,12 +223,12 @@ function getRequestOptions(conf) {
   if (proxyUrl) {
 
     // Print using proxy
-    var proxy = url.parse(proxyUrl)
+    var proxy = urlLib.parse(proxyUrl)
     if (proxy.auth) {
       // Mask password
       proxy.auth = proxy.auth.replace(/:.*$/, ':******')
     }
-    console.log('Using proxy ' + url.format(proxy))
+    console.log('Using proxy ' + urlLib.format(proxy))
 
     // Enable proxy
     options.proxy = proxyUrl
@@ -332,7 +338,7 @@ function copyIntoPlace(extractedPath, targetPath) {
     var files = fs.readdirSync(extractedPath)
     for (var i = 0; i < files.length; i++) {
       var file = path.join(extractedPath, files[i])
-      if (fs.statSync(file).isDirectory() && file.indexOf(helper.version) != -1) {
+      if (fs.statSync(file).isDirectory() && file.indexOf(phantomVersion) != -1) {
         console.log('Copying extracted folder', file, '->', targetPath)
         return kew.nfcall(ncp, file, targetPath)
       }
