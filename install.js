@@ -25,11 +25,10 @@ var which = require('which')
 
 // allow to specify a completely custom download url
 var customDownloadUrl = process.env.PHANTOMJS2_DOWNLOAD_URL || false
-var url = process.platform === 'win32' ? 'https://github.com/gskachkov/phantomjs/releases/download/' : 'https://github.com/bprodoehl/phantomjs/releases/download/'
-var systemPrefix = process.platform === 'win32' ? '-x86' : ''
+var url = 'https://bitbucket.org/ariya/phantomjs/downloads';
 var cdnUrl = process.env.PHANTOMJS_CDNURL || url
 var phantomVersion = process.env.PHANTOMJS2_VERSION || helper.version
-var downloadUrl = cdnUrl + phantomVersion + systemPrefix + '/phantomjs-' + phantomVersion + '-'
+var downloadUrl = cdnUrl + '/phantomjs-' + phantomVersion + '-'
 
 var originalPath = process.env.PATH
 
@@ -114,11 +113,13 @@ whichDeferred.promise
     if (customDownloadUrl) {
       downloadUrl = customDownloadUrl
     } else if (process.platform === 'linux' && process.arch === 'x64') {
-      downloadUrl += 'u1404-x86_64.zip'
+      downloadUrl += 'linux-x86_64.tar.bz2'
+    } else if (process.platform === 'linux' && process.arch == 'ia32') {
+      downloadUrl += 'linux-i686.tar.bz2'
     } else if (process.platform === 'darwin' || process.platform === 'openbsd' || process.platform === 'freebsd') {
       downloadUrl += 'macosx.zip'
     } else if (process.platform === 'win32') {
-      downloadUrl += 'win-x86.zip'
+      downloadUrl += 'windows.zip'
     } else {
       console.error('Unexpected platform or architecture:', process.platform, process.arch)
       exit(1)
